@@ -4,12 +4,13 @@
 #
 Name     : pypi-wikipedia
 Version  : 1.4.0
-Release  : 1
+Release  : 2
 URL      : https://files.pythonhosted.org/packages/67/35/25e68fbc99e672127cc6fbb14b8ec1ba3dfef035bf1e4c90f78f24a80b7d/wikipedia-1.4.0.tar.gz
 Source0  : https://files.pythonhosted.org/packages/67/35/25e68fbc99e672127cc6fbb14b8ec1ba3dfef035bf1e4c90f78f24a80b7d/wikipedia-1.4.0.tar.gz
 Summary  : Wikipedia API for Python
 Group    : Development/Tools
 License  : MIT
+Requires: pypi-wikipedia-license = %{version}-%{release}
 Requires: pypi-wikipedia-python = %{version}-%{release}
 Requires: pypi-wikipedia-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
@@ -18,6 +19,14 @@ BuildRequires : pypi(requests)
 
 %description
 =========
+
+%package license
+Summary: license components for the pypi-wikipedia package.
+Group: Default
+
+%description license
+license components for the pypi-wikipedia package.
+
 
 %package python
 Summary: python components for the pypi-wikipedia package.
@@ -49,7 +58,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1641421930
+export SOURCE_DATE_EPOCH=1649795829
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -64,6 +73,8 @@ python3 setup.py build
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/pypi-wikipedia
+cp %{_builddir}/wikipedia-1.4.0/LICENSE %{buildroot}/usr/share/package-licenses/pypi-wikipedia/7a790c253345b70ed875a8a1d53e2b657d8d2434
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
@@ -71,6 +82,10 @@ echo ----[ mark ]----
 
 %files
 %defattr(-,root,root,-)
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/pypi-wikipedia/7a790c253345b70ed875a8a1d53e2b657d8d2434
 
 %files python
 %defattr(-,root,root,-)
